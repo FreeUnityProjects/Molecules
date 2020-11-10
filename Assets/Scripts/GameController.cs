@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    public Hydrogen hydrogenPrefab;
-    public List<Hydrogen> hydrogens = new List<Hydrogen>();
+	public int maxMolecules = 9;
+	public Hydrogen hydrogenPrefab;
+	private List<Hydrogen> hydrogens = new List<Hydrogen>();
+	
 
     // Use this for initialization
-    void Start () {
-        hydrogens.Add(Instantiate(
-            hydrogenPrefab,
-            new Vector3(Random.Range(-9.0f, 9.0f), Random.Range(-9.0f, 9.0f), Random.Range(-9.0f, 9.0f)),
-            Quaternion.identity));
+	void Start () {
+		Hydrogen go;
+		for (var i =0; i<maxMolecules; i++) {
+			go = Instantiate(
+				hydrogenPrefab,
+				new Vector3(Random.Range(-9.0f, 9.0f), Random.Range(-9.0f, 9.0f), Random.Range(-9.0f, 9.0f)),
+				Quaternion.identity);
+			
+			go.GetComponent<Rigidbody>().velocity = new Vector3(
+				Random.Range(-5.0f, 5.0f),
+				Random.Range(-5.0f, 5.0f),
+				Random.Range(-5.0f, 5.0f));
+				
+			hydrogens.Add(go);
+		}
+		
+		
+		return;
+		// @todo:return yield with short delay?
+		
         hydrogens.Add(Instantiate(
             hydrogenPrefab,
             new Vector3(Random.Range(-9.0f, 9.0f), Random.Range(-9.0f, 9.0f), Random.Range(-9.0f, 9.0f)),

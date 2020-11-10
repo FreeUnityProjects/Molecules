@@ -6,10 +6,13 @@ public class Hydrogen : MonoBehaviour {
 
     AudioSource audioSource;
     public AudioClip audioClipBallBounce;
+    public ParticleSystem WallParticleSystem;
+    public ParticleSystem BondingParticleSystem;
 
-    GameObject partner = null;
+    private GameObject _partner = null;
     SpringJoint springJoint;
 
+	// just a comment
     Rigidbody rb;
 
     // Use this for initialization
@@ -31,27 +34,30 @@ public class Hydrogen : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (partner == null && other.gameObject.CompareTag("Hydrogen"))
+        if (_partner == null && other.gameObject.CompareTag("Hydrogen"))
         {
             Hydrogen otherHydrogen = (Hydrogen)other.gameObject.GetComponent("Hydrogen");
 
-            if (otherHydrogen.partner == null) // two free radicals meet and form covalent bond
+            if (otherHydrogen._partner == null) // two free radicals meet and form covalent bond
             {
-                partner = other.gameObject;
-                otherHydrogen.partner = this.gameObject;
+                BondingParticleSystem.Play();
+                _partner = other.gameObject;
+                otherHydrogen._partner = this.gameObject;
 
                 // chemical bond formation suddenly pulls slightly closer together
-                float deltaX = partner.transform.position.x - this.transform.position.x;
-                float deltaY = partner.transform.position.y - this.transform.position.y;
-                float deltaZ = partner.transform.position.z - this.transform.position.z;
+                float deltaX = _partner.transform.position.x - this.transform.position.x;
+                float deltaY = _partner.transform.position.y - this.transform.position.y;
+                float deltaZ = _partner.transform.position.z - this.transform.position.z;
                 this.transform.position = new Vector3(
                     this.transform.position.x + 0.25f * deltaX,
                     this.transform.position.y + 0.25f * deltaY,
                     this.transform.position.z + 0.25f * deltaZ);
-                partner.transform.position = new Vector3(
-                    partner.transform.position.x - 0.25f * deltaX,
-                    partner.transform.position.y - 0.25f * deltaY,
-                    partner.transform.position.z - 0.25f * deltaZ);
+                _partner.transform.position = new Vector3(
+                    _partner.transform.position.x - 0.25f * deltaX,
+                    _partner.transform.position.y - 0.25f * deltaY,
+	                _partner.transform.position.z - 0.25f * deltaZ);
+                    
+	            // @todo: change the color of both.
 
                 // create SpringJoint to implement covalent bond between these two atoms
                 springJoint = this.gameObject.AddComponent<SpringJoint>();
@@ -70,7 +76,8 @@ public class Hydrogen : MonoBehaviour {
         }
         if (other.gameObject.CompareTag("Wall"))
         {
-            audioSource.PlayOneShot(audioClipBallBounce, 0.25f);
+	        audioSource.PlayOneShot(audioClipBallBounce, 0.25f);
+            
         }
     }
 
