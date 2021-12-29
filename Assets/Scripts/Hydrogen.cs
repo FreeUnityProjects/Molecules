@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Hydrogen : MonoBehaviour {
 
     AudioSource audioSource;
     public AudioClip audioClipBallBounce;
-    public ParticleSystem WallParticleSystem;
-    public ParticleSystem BondingParticleSystem;
+    public ParticleSystem wallParticleSystem;
+    public ParticleSystem bondingParticleSystem;
 
     private GameObject _partner = null;
     SpringJoint springJoint;
@@ -21,16 +22,6 @@ public class Hydrogen : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-
-    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -40,7 +31,7 @@ public class Hydrogen : MonoBehaviour {
 
             if (otherHydrogen._partner == null) // two free radicals meet and form covalent bond
             {
-                BondingParticleSystem.Play();
+                bondingParticleSystem.Play();
                 _partner = other.gameObject;
                 otherHydrogen._partner = this.gameObject;
 
