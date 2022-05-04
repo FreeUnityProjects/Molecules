@@ -17,7 +17,7 @@ public class Hydrogen : MonoBehaviour {
     Rigidbody rb;
 
     // Use this for initialization
-    void Start () {
+    void OnEnable () {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
